@@ -1,5 +1,6 @@
 package com.example.eggtimer;
 
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
@@ -16,8 +17,10 @@ public class MainActivity extends AppCompatActivity {
     boolean counterIsActive = false;
     Button controllerButton;
     CountDownTimer countDownTimer;
+    MediaPlayer mPlayer;
+    Button shutUp;
 
-    public void updateTimer(int secondsLeft){
+     public void updateTimer(int secondsLeft){
         int minutes = (int) secondsLeft / 60;
         int seconds = secondsLeft - minutes * 60;
 
@@ -38,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         controllerButton.setText("Start");
         countDownTimer.cancel();
         counterIsActive = false;
+        shutUp.setVisibility(View.INVISIBLE);
     }
 
     public void controlTimer(View view){
@@ -58,8 +62,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 resetTimer();
-                MediaPlayer mPlayer = MediaPlayer.create(getApplicationContext(),R.raw.airhorn);
+                mPlayer = MediaPlayer.create(getApplicationContext(),R.raw.airhorn);
                 mPlayer.start();
+                shutUp.setVisibility(View.VISIBLE);
             }
         }.start();
         }
@@ -70,6 +75,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void shutUp(View view){
+         mPlayer.stop();
+         shutUp.setVisibility(View.INVISIBLE);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +88,9 @@ public class MainActivity extends AppCompatActivity {
         controllerButton = (Button) findViewById(R.id.controllerButton);
         timerSeekBar.setMax(600);
         timerSeekBar.setProgress(30);
+        shutUp = (Button) findViewById(R.id.shutUpButton);
+
+        shutUp.setVisibility(View.INVISIBLE);
 
         timerSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
