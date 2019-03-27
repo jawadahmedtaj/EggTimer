@@ -23,17 +23,13 @@ public class MainActivity extends AppCompatActivity {
      public void updateTimer(int secondsLeft){
         int minutes = (int) secondsLeft / 60;
         int seconds = secondsLeft - minutes * 60;
-
         String secondString = Integer.toString(seconds);
-
         if (seconds<= 9){
             secondString = "0" + secondString;
         }
-
         timerTextView = (TextView) findViewById(R.id.timerTextView);
         timerTextView.setText(Integer.toString(minutes)+":"+secondString);
     }
-
     public void resetTimer(){
         timerTextView.setText("0:30");
         timerSeekBar.setProgress(30);
@@ -43,22 +39,17 @@ public class MainActivity extends AppCompatActivity {
         counterIsActive = false;
         shutUp.setVisibility(View.INVISIBLE);
     }
-
     public void controlTimer(View view){
-
         if (counterIsActive == false)
         {
         counterIsActive = true;
         timerSeekBar.setEnabled(false);
         controllerButton.setText("Stop");
-
         countDownTimer = new CountDownTimer(timerSeekBar.getProgress()*1000+100,1000){
-
             @Override
             public void onTick(long millisUntilFinished) {
             updateTimer((int) millisUntilFinished/1000);
             }
-
             @Override
             public void onFinish() {
                 resetTimer();
@@ -74,12 +65,10 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-
     public void shutUp(View view){
          mPlayer.stop();
          shutUp.setVisibility(View.INVISIBLE);
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,23 +78,17 @@ public class MainActivity extends AppCompatActivity {
         timerSeekBar.setMax(600);
         timerSeekBar.setProgress(30);
         shutUp = (Button) findViewById(R.id.shutUpButton);
-
         shutUp.setVisibility(View.INVISIBLE);
-
         timerSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 updateTimer(progress);
             }
-
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
-
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
             }
         });
     }
